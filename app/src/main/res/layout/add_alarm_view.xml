@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:id="@+id/add_alarm"
+             android:clickable="true">
+
+        <!--
+        <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_add_alarm_white"
+        android:adjustViewBounds="true"
+        android:maxHeight="30dp"
+        android:scaleType="centerCrop"
+
+        android:layout_marginBottom="20dp"
+        android:id="@+id/add_alarm_icon"
+        android:layout_gravity="bottom|center"/>
+        -->
+
+        <RelativeLayout
+            android:id="@+id/alarm_linear_layout"
+            android:layout_width="330dp"
+            android:layout_height="430dp"
+            android:background="@drawable/alarm_linear_layout_rounded"
+            android:orientation="vertical"
+            android:layout_gravity="bottom|center"
+            android:gravity="top"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="19dp"
+
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="5dp">
+
+
+                <TimePicker
+                    android:id="@+id/id_time_picker"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:timePickerMode="spinner"
+
+                    android:layout_centerHorizontal="true"
+                    android:layout_alignParentTop="true"
+                    android:background="@drawable/alarm_linear_layout_rounded"
+                    >
+                </TimePicker>
+
+                 <TextView
+                    android:id="@+id/id_sound_text_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-condensed"
+                    android:textStyle="normal"
+                    android:text="Ringtone"
+                    android:textSize="@dimen/add_alarm_properties_font_size"
+                    android:textColor="@color/primaryDark"
+                    android:layout_below="@id/id_time_picker"
+                    android:paddingLeft="15dp"
+                    android:paddingTop="0dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:id="@+id/id_alarm_repeat_text_view"
+                    android:layout_below="@id/id_sound_text_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-condensed"
+                    android:textStyle="normal"
+                    android:text="Repeat"
+                    android:textSize="@dimen/add_alarm_properties_font_size"
+                    android:textColor="@color/primaryDark"
+                    android:layout_alignParentLeft="true"
+                    android:padding="15dp"
+                    />
+
+
+                <LinearLayout
+                    android:id="@+id/id_vibration_linear_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_below="@id/id_alarm_repeat_text_view"
+                    android:paddingLeft="15dp"
+                    android:paddingBottom="15dp"
+                    >
+                        <TextView
+                            android:id="@+id/id_vibration_text_view"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="sans-serif-condensed"
+                            android:textStyle="normal"
+                            android:text="Vibration"
+                            android:textSize="@dimen/add_alarm_properties_font_size"
+                            android:textColor="@color/primaryDark"
+
+
+                            android:layout_weight="1"/>
+
+                        <android.support.v7.widget.SwitchCompat
+                            android:id="@+id/id_vibration_switch"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:adjustViewBounds="true"
+                            android:checked="true"
+                            android:theme="@style/MySwitch"
+                            />
+
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_below="@id/id_vibration_linear_layout"
+                    >
+
+                    <TextView
+                        android:id="@+id/id_cancel_button"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/primaryDark"
+                        android:textSize="15dp"
+                        android:text="Cancel"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:paddingTop="20dp"
+                        android:paddingBottom="5dp"
+                        />
+
+                    <TextView
+                        android:id="@+id/id_ok_button"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/primaryDark"
+                        android:textSize="15dp"
+                        android:text="OK"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:paddingTop="20dp"
+                        android:paddingBottom="5dp"
+                            />
+        </LinearLayout>
+
+        </RelativeLayout>
+
+</FrameLayout>

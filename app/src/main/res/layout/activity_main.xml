@@ -55,12 +55,11 @@
 
 
 
-        <LinearLayout
+        <ListView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:id="@+id/show_alarms_linear_layout">
-        </LinearLayout>
+            android:id="@+id/show_alarms_list_view">
+        </ListView>
     </ScrollView>
 
     <LinearLayout

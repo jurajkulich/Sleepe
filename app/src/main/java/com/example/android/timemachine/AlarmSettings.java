@@ -7,23 +7,35 @@ import android.net.Uri;
  */
 
 public class AlarmSettings {
-    private Uri alarmRingtone;
-    private boolean alarmvibration;
+    private int alarmID;
+    private String alarmRingtone;
+    private int alarmvibration;
     private int alarmHour, alarmMinute;
 
-    AlarmSettings(Uri ringtone, boolean vibration, int hour, int minute)
+    AlarmSettings() {}
+
+    AlarmSettings(int id, String ringtone,int vibration, int hour, int minute)
     {
+        alarmID = id;
         alarmRingtone = ringtone;
         alarmvibration = vibration;
         alarmHour = hour;
         alarmMinute = minute;
     }
 
-    public Uri getAlarmRingtone() {
+    public int getAlarmID() {
+        return alarmID;
+    }
+
+    public void setAlarmID(int alarmID) {
+        this.alarmID = alarmID;
+    }
+
+    public String getAlarmRingtone() {
         return alarmRingtone;
     }
 
-    public boolean isAlarmvibration() {
+    public int isAlarmvibration() {
         return alarmvibration;
     }
 
@@ -33,5 +45,21 @@ public class AlarmSettings {
 
     public int getAlarmMinute() {
         return alarmMinute;
+    }
+
+    public void setAlarmRingtone(String alarmRingtone) {
+        this.alarmRingtone = alarmRingtone;
+    }
+
+    public void setAlarmvibration(int alarmvibration) {
+        this.alarmvibration = alarmvibration;
+    }
+
+    public void setAlarmHour(int alarmHour) {
+        this.alarmHour = alarmHour;
+    }
+
+    public void setAlarmMinute(int alarmMinute) {
+        this.alarmMinute = alarmMinute;
     }
 }

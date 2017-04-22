@@ -27,6 +27,7 @@ import android.view.animation.DecelerateInterpolator;
 import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -39,8 +40,7 @@ import java.util.Date;
 
 public class MainActivity extends AppCompatActivity implements AddAlarmFragment.AlarmInterface {
 
-    ArrayList<AlarmSettings> mAlarmSettings = new ArrayList<AlarmSettings>();
-    LinearLayout alarmScrollView;
+    private ListView alarmListView;
 
 
     @Override
@@ -62,7 +62,10 @@ public class MainActivity extends AppCompatActivity implements AddAlarmFragment.
         actionBar.setDisplayShowTitleEnabled(false);
         */
 
-        alarmScrollView = (LinearLayout) findViewById(R.id.show_alarms_linear_layout);
+        alarmListView = (ListView) findViewById(R.id.show_alarms_list_view);
+        final ArrayList<AlarmSettings> AlarmSettingsList = AlarmSettings.getSettingsFromFile('settings.json', this);
+        String [] listItems = new String[AlarmSettingsList.size()];
+
 
         final ImageView addAlarmIcon = (ImageView) findViewById(R.id.add_alarm_icon);
 
@@ -147,7 +150,7 @@ public class MainActivity extends AppCompatActivity implements AddAlarmFragment.
         newAlarm.setTextColor(getResources().getColor(R.color.primaryDark));
         newAlarm.setGravity(Gravity.CENTER);
         newAlarm.setId(0);
-        alarmScrollView.addView(newAlarm);
+        alarmListView.addView(newAlarm);
 
         StartAlarmActivty(settings);
     }

@@ -38,10 +38,11 @@
         android:layout_centerHorizontal="true"
         android:paddingBottom="1dp"/>
 
-    <LinearLayout
+
+    <ScrollView
         android:id="@+id/add_alarm_linear_layout"
         android:layout_width="330dp"
-        android:background="@drawable/alarm_linear_layout_rounded"
+
         android:orientation="vertical"
         android:layout_gravity="bottom|center"
         android:gravity="bottom"
@@ -49,6 +50,25 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="19dp"
         android:layout_height="350dp"
+        android:padding="15dp"
+        >
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:id="@+id/show_alarms_linear_layout">
+        </LinearLayout>
+    </ScrollView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        android:background="@drawable/top_bottom_border"
+        android:layout_above="@id/add_alarm_linear_layout"
         >
     </LinearLayout>
+
 </RelativeLayout>

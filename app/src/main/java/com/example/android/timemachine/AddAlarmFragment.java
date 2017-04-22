@@ -65,6 +65,9 @@ public class AddAlarmFragment extends Fragment  {
         TimePicker alarmTimePicker = (TimePicker) rootFragmentView.findViewById(R.id.id_time_picker);
         alarmTimePicker.setIs24HourView(true);
 
+        currentRingtone = RingtoneManager.getActualDefaultRingtoneUri(getContext(), RingtoneManager.TYPE_ALARM);
+        vibrationStatus = true;
+
         alarmHour = (cal.get(Calendar.HOUR_OF_DAY));
         alarmMinute = (cal.get(Calendar.MINUTE));
         alarmTimePicker.setHour(cal.get(Calendar.HOUR_OF_DAY));
@@ -82,12 +85,10 @@ public class AddAlarmFragment extends Fragment  {
         ringtoneTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                currentRingtone = RingtoneManager.getActualDefaultRingtoneUri(getContext(), RingtoneManager.TYPE_ALARM);
                 Intent intent = new Intent(RingtoneManager.ACTION_RINGTONE_PICKER);
                 intent.putExtra(RingtoneManager.EXTRA_RINGTONE_TYPE, RingtoneManager.TYPE_ALARM);
                 intent.putExtra(RingtoneManager.EXTRA_RINGTONE_TITLE, "Select Ringtone");
                 intent.putExtra(RingtoneManager.EXTRA_RINGTONE_SHOW_DEFAULT, true);
-                intent.putExtra(RingtoneManager.EXTRA_RINGTONE_EXISTING_URI, currentRingtone);
                 startActivityForResult(intent, PICK_ALARM_REQUEST);
             }
 
@@ -119,6 +120,7 @@ public class AddAlarmFragment extends Fragment  {
             @Override
             public void onClick(View view) {
                 alarmInterface.setAlarmSettings(new AlarmSettings(currentRingtone, vibrationStatus, alarmHour, alarmMinute));
+                getFragmentManager().popBackStack();
             }
         });
 
@@ -131,7 +133,7 @@ public class AddAlarmFragment extends Fragment  {
         {
             if( resultCode == RESULT_OK)
             {
-                currentRingtone = data.getData();
+                currentRingtone = data.getParcelableExtra(RingtoneManager.EXTRA_RINGTONE_PICKED_URI);
             }
 
         }

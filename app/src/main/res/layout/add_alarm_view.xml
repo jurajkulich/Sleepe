@@ -60,7 +60,7 @@
                     android:textColor="@color/primaryDark"
                     android:layout_below="@id/id_time_picker"
                     android:paddingLeft="15dp"
-                    android:paddingTop="0dp"/>
+                    android:paddingTop="5dp"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -88,7 +88,9 @@
                     android:orientation="horizontal"
                     android:layout_below="@id/id_alarm_repeat_text_view"
                     android:paddingLeft="15dp"
-                    android:paddingBottom="15dp"
+                    android:paddingBottom="20dp"
+                    android:layout_alignParentLeft="true"
+
                     >
                         <TextView
                             android:id="@+id/id_vibration_text_view"
@@ -110,6 +112,8 @@
                             android:adjustViewBounds="true"
                             android:checked="true"
                             android:theme="@style/MySwitch"
+                            android:paddingRight="20dp"
+
                             />
 
 
@@ -121,6 +125,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:layout_below="@id/id_vibration_linear_layout"
+
                     >
 
                     <TextView

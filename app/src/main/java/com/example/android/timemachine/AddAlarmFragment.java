@@ -39,7 +39,7 @@ public class AddAlarmFragment extends Fragment  {
 
     static final int PICK_ALARM_REQUEST = 1;
     private Uri currentRingtone;
-    private boolean vibrationStatus;
+    private int vibrationStatus;
     private int alarmHour, alarmMinute;
 
     AlarmInterface alarmInterface;
@@ -66,7 +66,7 @@ public class AddAlarmFragment extends Fragment  {
         alarmTimePicker.setIs24HourView(true);
 
         currentRingtone = RingtoneManager.getActualDefaultRingtoneUri(getContext(), RingtoneManager.TYPE_ALARM);
-        vibrationStatus = true;
+        vibrationStatus = 1;
 
         alarmHour = (cal.get(Calendar.HOUR_OF_DAY));
         alarmMinute = (cal.get(Calendar.MINUTE));
@@ -101,7 +101,10 @@ public class AddAlarmFragment extends Fragment  {
         {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                vibrationStatus = b;
+                if(b)
+                    vibrationStatus = 1;
+                else
+                    vibrationStatus = 0;
             }
         });
 
@@ -119,7 +122,7 @@ public class AddAlarmFragment extends Fragment  {
         okButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                alarmInterface.setAlarmSettings(new AlarmSettings(currentRingtone, vibrationStatus, alarmHour, alarmMinute));
+                alarmInterface.setAlarmSettings(new AlarmSettings(currentRingtone.toString(), vibrationStatus, alarmHour, alarmMinute));
                 getFragmentManager().popBackStack();
             }
         });

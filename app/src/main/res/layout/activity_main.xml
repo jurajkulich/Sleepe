@@ -39,7 +39,7 @@
         android:paddingBottom="1dp"/>
 
 
-    <ScrollView
+    <LinearLayout
         android:id="@+id/add_alarm_linear_layout"
         android:layout_width="330dp"
 
@@ -56,15 +56,19 @@
 
 
         <ListView
-            android:layout_width="match_parent"
+
+            android:layout_width="330dp"
             android:layout_height="match_parent"
-            android:id="@+id/show_alarms_list_view">
+            android:id="@+id/show_alarms_list_view"
+            android:layout_above="@+id/add_alarm_icon">
         </ListView>
-    </ScrollView>
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="3dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginLeft="15dp"
+        android:layout_height="1dp"
         android:background="@drawable/top_bottom_border"
         android:layout_above="@id/add_alarm_linear_layout"
         >

@@ -21,7 +21,7 @@ public class AlarmDatabaseHandler extends SQLiteOpenHelper {
 
     private static final String TABLE_SETTINGS = "settings";
 
-    private static final String KEY_ID = "id";
+    private static final String KEY_ID = "_id";
     private static final String RINGTONE = "ringtone";
     private static final String ALARM_MINUTE = "alarm_minute";
     private static final String ALARM_HOUR = "alarm_hour";
@@ -34,7 +34,7 @@ public class AlarmDatabaseHandler extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
-        String CREATE_SETTINGS_TABLE = "CREATE TABLE " + TABLE_SETTINGS + "(" + KEY_ID + " INTEGER PRIMARY KEY,"
+        String CREATE_SETTINGS_TABLE = "CREATE TABLE " + TABLE_SETTINGS + "(" + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
                 + RINGTONE + " TEXT," + ALARM_HOUR + " INT," + ALARM_MINUTE + " INT," + VIBRATION + " INT" + ")";
         sqLiteDatabase.execSQL(CREATE_SETTINGS_TABLE);
     }
@@ -51,7 +51,7 @@ public class AlarmDatabaseHandler extends SQLiteOpenHelper {
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        values.put(KEY_ID, alarmSettings.getAlarmID());
+        //values.put(KEY_ID, alarmSettings.getAlarmID());
         values.put(RINGTONE, alarmSettings.getAlarmRingtone());
         values.put(ALARM_HOUR, alarmSettings.getAlarmHour());
         values.put(ALARM_MINUTE, alarmSettings.getAlarmMinute());
@@ -65,7 +65,7 @@ public class AlarmDatabaseHandler extends SQLiteOpenHelper {
         SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
 
         Cursor cursor = sqLiteDatabase.query(TABLE_SETTINGS, new String[] { KEY_ID, RINGTONE, ALARM_HOUR,
-            ALARM_MINUTE, VIBRATION}, KEY_ID + "=?", new String[] {String.valueOf(id)} null, null, null, null);
+            ALARM_MINUTE, VIBRATION}, KEY_ID + "=?", new String[] {String.valueOf(id)}, null, null, null, null);
 
         if(cursor != null)
             cursor.moveToFirst();
@@ -73,6 +73,33 @@ public class AlarmDatabaseHandler extends SQLiteOpenHelper {
         AlarmSettings alarmSettings = new AlarmSettings(Integer.parseInt(cursor.getString(0)), cursor.getString(1), cursor.getInt(2), cursor.getInt(3), cursor.getInt(4));
 
         return alarmSettings;
+    }
+
+    public List<String> getAllAlarmTimes()
+    {
+        List<String> times = new ArrayList<String>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        String hourMinute = "SELECT * FROM " + TABLE_SETTINGS;
+        Cursor cursor = db.rawQuery(hourMinute, null);
+        if(cursor.moveToFirst())
+        {
+            do {
+                int hour = cursor.getInt(2);
+                int minute = cursor.getInt(3);
+                String time;
+                if( hour < 10 && minute < 10 )
+                    time  = "0" + hour + ":" + "0" + minute;
+                else if(hour < 10)
+                    time = "0" + hour + ":" + minute;
+                else if(minute < 10 )
+                    time = hour + ":" + "0" + minute;
+                else
+                    time = hour + ":" +  minute;
+                times.add(time);
+            } while(cursor.moveToNext());
+        }
+
+        return times;
     }
 
     public List<AlarmSettings> getAllAlarmSettings() {
@@ -95,7 +122,6 @@ public class AlarmDatabaseHandler extends SQLiteOpenHelper {
                 alarmSettingsList.add(alarmSettings);
             } while(cursor.moveToNext());
         }
-
         return alarmSettingsList;
     }
 
@@ -103,7 +129,7 @@ public class AlarmDatabaseHandler extends SQLiteOpenHelper {
     public int getAlarmSettingsCount() {
         String countQuery = "SELECT  * FROM " + TABLE_SETTINGS;
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery(countQuerym, null);
+        Cursor cursor = db.rawQuery(countQuery, null);
         cursor.close();
 
         return cursor.getCount();
@@ -126,4 +152,11 @@ public class AlarmDatabaseHandler extends SQLiteOpenHelper {
                 new String[] { String.valueOf(alarmSettings.getAlarmID())});
         db.close();
     }
+
+    public void clearDatabase() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String clearDBQuery = "DELETE FROM "+ TABLE_SETTINGS;
+        db.execSQL(clearDBQuery);
+    }
+
 }

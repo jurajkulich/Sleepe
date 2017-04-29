@@ -25,6 +25,8 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.LinearInterpolator;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -36,11 +38,17 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity implements AddAlarmFragment.AlarmInterface {
 
     private ListView alarmListView;
+    private AlarmDatabaseHandler db;
+    private List<String> AlarmSettingsList = new ArrayList<String>();
+    ArrayAdapter<String> adapter;
+
+
 
 
     @Override
@@ -55,17 +63,12 @@ public class MainActivity extends AppCompatActivity implements AddAlarmFragment.
         // status bar is hidden, so hide that too if necessary.
         getSupportActionBar().hide();
 
-
-        /* ActionBar initialization
-        ActionBar actionBar = getSupportActionBar();
-        // Hide ActionBar Title
-        actionBar.setDisplayShowTitleEnabled(false);
-        */
-
+        db = new AlarmDatabaseHandler(this);
+        //db.clearDatabase();
         alarmListView = (ListView) findViewById(R.id.show_alarms_list_view);
-        final ArrayList<AlarmSettings> AlarmSettingsList = AlarmSettings.getSettingsFromFile('settings.json', this);
-        String [] listItems = new String[AlarmSettingsList.size()];
-
+        AlarmSettingsList = db.getAllAlarmTimes();
+        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, AlarmSettingsList);
+        alarmListView.setAdapter(adapter);
 
         final ImageView addAlarmIcon = (ImageView) findViewById(R.id.add_alarm_icon);
 
@@ -125,8 +128,17 @@ public class MainActivity extends AppCompatActivity implements AddAlarmFragment.
 
     public void setAlarmSettings(AlarmSettings settings)
     {
+        db.addSettings(settings);
+        adapter.clear();
+        adapter.addAll(db.getAllAlarmTimes());
 
-        mAlarmSettings.add(settings);
+        alarmListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Toast.makeText(getApplicationContext(),
+                        ((TextView) view).getText() , Toast.LENGTH_SHORT).show();
+            }
+        });
         /*
         Toast.makeText(getBaseContext(), settings.getAlarmHour() + ":" + settings.getAlarmMinute() , Toast.LENGTH_SHORT).show();
         Ringtone r = RingtoneManager.getRingtone(getApplicationContext(), settings.getAlarmRingtone());
@@ -135,22 +147,7 @@ public class MainActivity extends AppCompatActivity implements AddAlarmFragment.
             v.vibrate(5000);
         //r.play();
         */
-        int hour = settings.getAlarmHour();
-        int minute = settings.getAlarmMinute();
-        TextView newAlarm = new TextView(this);
-        if( hour < 10 && minute < 10 )
-            newAlarm.setText("0" + hour + ":" + "0" + minute);
-        else if(hour < 10)
-            newAlarm.setText("0" + hour + ":" + minute);
-        else if(minute < 10 )
-            newAlarm.setText(hour + ":" + "0" + minute);
-        else
-            newAlarm.setText( hour + ":" +  minute);
-        newAlarm.setTextSize(TypedValue.COMPLEX_UNIT_SP, 40);
-        newAlarm.setTextColor(getResources().getColor(R.color.primaryDark));
-        newAlarm.setGravity(Gravity.CENTER);
-        newAlarm.setId(0);
-        alarmListView.addView(newAlarm);
+
 
         StartAlarmActivty(settings);
     }

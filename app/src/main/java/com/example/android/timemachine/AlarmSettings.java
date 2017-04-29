@@ -7,7 +7,7 @@ import android.net.Uri;
  */
 
 public class AlarmSettings {
-    private int alarmID;
+    private int _id;
     private String alarmRingtone;
     private int alarmvibration;
     private int alarmHour, alarmMinute;
@@ -16,7 +16,15 @@ public class AlarmSettings {
 
     AlarmSettings(int id, String ringtone,int vibration, int hour, int minute)
     {
-        alarmID = id;
+        _id = id;
+        alarmRingtone = ringtone;
+        alarmvibration = vibration;
+        alarmHour = hour;
+        alarmMinute = minute;
+    }
+
+    AlarmSettings(String ringtone,int vibration, int hour, int minute)
+    {
         alarmRingtone = ringtone;
         alarmvibration = vibration;
         alarmHour = hour;
@@ -24,11 +32,11 @@ public class AlarmSettings {
     }
 
     public int getAlarmID() {
-        return alarmID;
+        return _id;
     }
 
     public void setAlarmID(int alarmID) {
-        this.alarmID = alarmID;
+        this._id = alarmID;
     }
 
     public String getAlarmRingtone() {

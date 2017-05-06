@@ -159,4 +159,21 @@ public class AlarmDatabaseHandler extends SQLiteOpenHelper {
         db.execSQL(clearDBQuery);
     }
 
+    public AlarmSettings getAlarmSettingsByIndex(int position)
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String selectQuery = "SELECT  * FROM " + TABLE_SETTINGS;
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        cursor.moveToPosition(position);
+        AlarmSettings alarmSettings = new AlarmSettings();
+        alarmSettings.setAlarmID(Integer.parseInt(cursor.getString(0)));
+        alarmSettings.setAlarmRingtone(cursor.getString(1));
+        alarmSettings.setAlarmvibration(cursor.getInt(4));
+        alarmSettings.setAlarmHour(cursor.getInt(2));
+        alarmSettings.setAlarmMinute(cursor.getInt(3));
+
+        return alarmSettings;
+    }
+
 }

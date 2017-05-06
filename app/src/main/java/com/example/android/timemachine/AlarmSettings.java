@@ -2,11 +2,12 @@ package com.example.android.timemachine;
 
 import android.net.Uri;
 
+
 /**
  * Created by Juraj on 13.4.2017.
  */
 
-public class AlarmSettings {
+public class AlarmSettings  {
     private int _id;
     private String alarmRingtone;
     private int alarmvibration;

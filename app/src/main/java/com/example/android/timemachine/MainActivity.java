@@ -47,8 +47,7 @@ public class MainActivity extends AppCompatActivity implements AddAlarmFragment.
     private AlarmDatabaseHandler db;
     private List<String> AlarmSettingsList = new ArrayList<String>();
     ArrayAdapter<String> adapter;
-
-
+    CustomAlarmAdapter customAdapter;
 
 
     @Override
@@ -67,8 +66,9 @@ public class MainActivity extends AppCompatActivity implements AddAlarmFragment.
         //db.clearDatabase();
         alarmListView = (ListView) findViewById(R.id.show_alarms_list_view);
         AlarmSettingsList = db.getAllAlarmTimes();
-        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, AlarmSettingsList);
-        alarmListView.setAdapter(adapter);
+        //adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, AlarmSettingsList);
+        customAdapter = new CustomAlarmAdapter(this, AlarmSettingsList, db);
+        alarmListView.setAdapter(customAdapter);
 
         final ImageView addAlarmIcon = (ImageView) findViewById(R.id.add_alarm_icon);
 
@@ -128,43 +128,22 @@ public class MainActivity extends AppCompatActivity implements AddAlarmFragment.
 
     public void setAlarmSettings(AlarmSettings settings)
     {
+
         db.addSettings(settings);
-        adapter.clear();
-        adapter.addAll(db.getAllAlarmTimes());
-
-        alarmListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Toast.makeText(getApplicationContext(),
-                        ((TextView) view).getText() , Toast.LENGTH_SHORT).show();
-            }
-        });
-        /*
-        Toast.makeText(getBaseContext(), settings.getAlarmHour() + ":" + settings.getAlarmMinute() , Toast.LENGTH_SHORT).show();
-        Ringtone r = RingtoneManager.getRingtone(getApplicationContext(), settings.getAlarmRingtone());
-        Vibrator v = (Vibrator) this.getSystemService(Context.VIBRATOR_SERVICE);
-        if(settings.isAlarmvibration())
-            v.vibrate(5000);
-        //r.play();
-        */
-
-
-        StartAlarmActivty(settings);
+        Toast.makeText(getBaseContext(), "Databse set", Toast.LENGTH_SHORT).show();
+        customAdapter.clear();
+        customAdapter.addAll(db.getAllAlarmTimes());
+        customAdapter.notifyDataSetChanged();
+        //StartAlarmActivty(settings);
     }
 
-    public void StartAlarmActivty(AlarmSettings alarmSettings)
+    public void StartAlarmActivty(int position)
     {
-        final Calendar cal = Calendar.getInstance();
-        cal.set(Calendar.HOUR_OF_DAY, alarmSettings.getAlarmHour());
-        cal.set(Calendar.MINUTE, alarmSettings.getAlarmMinute());
-        cal.set(Calendar.SECOND, 0);
-        AlarmManager alarmManager = (AlarmManager) getBaseContext().getSystemService(Context.ALARM_SERVICE);
-        Intent intent = new Intent(getBaseContext(), AlarmRingingActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(getBaseContext(), 0, intent, 1);
-        alarmManager.setWindow(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), 5000,  pendingIntent );
+        //AlarmSettings alarmSettings = db.getAlarmSettingsByIndex(position);
+
     }
 
 
 }
 
-// android:background="@drawable/alarm_linear_layout_rounded"
+

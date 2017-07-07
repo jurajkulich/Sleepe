@@ -42,6 +42,8 @@ public class AddAlarmFragment extends Fragment  {
     private int vibrationStatus;
     private int alarmHour, alarmMinute;
 
+    private TextView ringtoneNameTextView;
+
     AlarmInterface alarmInterface;
     public interface AlarmInterface {
         void setAlarmSettings(AlarmSettings settings);
@@ -59,15 +61,20 @@ public class AddAlarmFragment extends Fragment  {
 
 
         final Calendar cal = Calendar.getInstance();
-        //pHour = cal.get(Calendar.HOUR_OF_DAY);
-        //pMinute = cal.get(Calendar.MINUTE);
 
         TimePicker alarmTimePicker = (TimePicker) rootFragmentView.findViewById(R.id.id_time_picker);
         alarmTimePicker.setIs24HourView(true);
 
+        ringtoneNameTextView = (TextView) rootFragmentView.findViewById(R.id.id_sound_name_text_view);
         currentRingtone = RingtoneManager.getActualDefaultRingtoneUri(getContext(), RingtoneManager.TYPE_ALARM);
+        Ringtone ring = RingtoneManager.getRingtone(getContext(), currentRingtone);
+        String name = ring.getTitle(getContext());
+        name = name.replace(".ogg", "");
+        ringtoneNameTextView.setText(name);
+
         vibrationStatus = 1;
 
+        // Set time from TimePicker, or current time by default
         alarmHour = (cal.get(Calendar.HOUR_OF_DAY));
         alarmMinute = (cal.get(Calendar.MINUTE));
         alarmTimePicker.setHour(cal.get(Calendar.HOUR_OF_DAY));
@@ -80,9 +87,9 @@ public class AddAlarmFragment extends Fragment  {
             }
         });
 
-
+        // Set ringtone from RingtoneManager
         final TextView ringtoneTextView = (TextView) rootFragmentView.findViewById(R.id.id_sound_text_view);
-        ringtoneTextView.setOnClickListener(new View.OnClickListener() {
+        ringtoneNameTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(RingtoneManager.ACTION_RINGTONE_PICKER);
@@ -95,7 +102,7 @@ public class AddAlarmFragment extends Fragment  {
 
         });
 
-
+        // Set vibration, default is on
         final SwitchCompat vibrationSwitch = (SwitchCompat) rootFragmentView.findViewById(R.id.id_vibration_switch);
         vibrationSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
         {
@@ -109,6 +116,7 @@ public class AddAlarmFragment extends Fragment  {
         });
 
 
+        // Cancel button cancels fragment
         TextView cancelButton = (TextView) rootFragmentView.findViewById(R.id.id_cancel_button);
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -117,7 +125,7 @@ public class AddAlarmFragment extends Fragment  {
             }
         });
 
-
+        // OK button saves new Alarm
         TextView okButton = (TextView) rootFragmentView.findViewById(R.id.id_ok_button);
         okButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -130,6 +138,7 @@ public class AddAlarmFragment extends Fragment  {
         return rootFragmentView;
     }
 
+    // onActivityResult for ringtone pick
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data){
         if( requestCode == PICK_ALARM_REQUEST)
@@ -137,6 +146,9 @@ public class AddAlarmFragment extends Fragment  {
             if( resultCode == RESULT_OK)
             {
                 currentRingtone = data.getParcelableExtra(RingtoneManager.EXTRA_RINGTONE_PICKED_URI);
+                Ringtone ring = RingtoneManager.getRingtone(getContext(), currentRingtone);
+                ringtoneNameTextView.setText(ring.getTitle(getContext()));
+
             }
 
         }

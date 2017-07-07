@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,18 +48,18 @@ public class AlarmDatabaseHandler extends SQLiteOpenHelper {
     }
 
 
-    public void addSettings(AlarmSettings alarmSettings){
+    public long addSettings(AlarmSettings alarmSettings){
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        //values.put(KEY_ID, alarmSettings.getAlarmID());
+        // values.put(KEY_ID, alarmSettings.getAlarmID());
         values.put(RINGTONE, alarmSettings.getAlarmRingtone());
         values.put(ALARM_HOUR, alarmSettings.getAlarmHour());
         values.put(ALARM_MINUTE, alarmSettings.getAlarmMinute());
         values.put(VIBRATION, alarmSettings.isAlarmvibration());
-
-        sqLiteDatabase.insert(TABLE_SETTINGS, null, values);
+        long id = sqLiteDatabase.insert(TABLE_SETTINGS, null, values);
         sqLiteDatabase.close();
+        return id;
     }
 
     public AlarmSettings getAlarmSettings(int id){
@@ -139,6 +140,7 @@ public class AlarmDatabaseHandler extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
+
         values.put(RINGTONE, alarmSettings.getAlarmRingtone());
         values.put(ALARM_HOUR, alarmSettings.getAlarmHour());
         values.put(ALARM_MINUTE, alarmSettings.getAlarmMinute());
@@ -146,10 +148,10 @@ public class AlarmDatabaseHandler extends SQLiteOpenHelper {
 
         return db.update(TABLE_SETTINGS, values, KEY_ID + " = ?", new String[] { String.valueOf(alarmSettings.getAlarmID())});
     }
-    public void deleteAlarmSettings(AlarmSettings alarmSettings) {
+
+    public void deleteAlarmSettings(long position) {
         SQLiteDatabase db = this.getWritableDatabase();
-        db.delete(TABLE_SETTINGS, KEY_ID + " = ?",
-                new String[] { String.valueOf(alarmSettings.getAlarmID())});
+        db.execSQL("DELETE FROM " + TABLE_SETTINGS + " WHERE " + KEY_ID + "= '" + position  + "'");
         db.close();
     }
 

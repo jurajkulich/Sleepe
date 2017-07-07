@@ -8,14 +8,14 @@ import android.net.Uri;
  */
 
 public class AlarmSettings  {
-    private int _id;
+    private long _id;
     private String alarmRingtone;
     private int alarmvibration;
     private int alarmHour, alarmMinute;
 
     AlarmSettings() {}
 
-    AlarmSettings(int id, String ringtone,int vibration, int hour, int minute)
+    AlarmSettings(long id, String ringtone,int vibration, int hour, int minute)
     {
         _id = id;
         alarmRingtone = ringtone;
@@ -32,11 +32,11 @@ public class AlarmSettings  {
         alarmMinute = minute;
     }
 
-    public int getAlarmID() {
+    public long getAlarmID() {
         return _id;
     }
 
-    public void setAlarmID(int alarmID) {
+    public void setAlarmID(long alarmID) {
         this._id = alarmID;
     }
 

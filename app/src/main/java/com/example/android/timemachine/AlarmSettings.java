@@ -2,38 +2,34 @@ package com.example.android.timemachine;
 
 import android.net.Uri;
 
+import io.requery.Entity;
+import io.requery.Generated;
+import io.requery.Key;
+
 
 /**
  * Created by Juraj on 13.4.2017.
  */
+@Entity
+abstract class AlarmSettings  {
 
-public class AlarmSettings  {
-    private long _id;
-    private String alarmRingtone;
-    private int alarmvibration;
-    private int alarmHour, alarmMinute;
+    @Key @Generated
+    int id;
+
+
+    String alarmRingtone;
+    int alarmvibration;
+    int alarmHour;
+    int alarmMinute;
 
     AlarmSettings() {}
 
     AlarmSettings(long id, String ringtone,int vibration, int hour, int minute)
     {
-        _id = id;
-        alarmRingtone = ringtone;
-        alarmvibration = vibration;
-        alarmHour = hour;
-        alarmMinute = minute;
-    }
-
-    AlarmSettings(String ringtone,int vibration, int hour, int minute)
-    {
-        alarmRingtone = ringtone;
-        alarmvibration = vibration;
-        alarmHour = hour;
-        alarmMinute = minute;
     }
 
     public long getAlarmID() {
-        return _id;
+        return id;
     }
 
     public void setAlarmID(long alarmID) {

@@ -1,5 +1,5 @@
 package com.example.android.timemachine;
-
+/*
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -11,7 +11,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Vibrator;
-import android.support.v7.app.AppCompatActivity;
+// import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
@@ -28,9 +28,9 @@ public class AlarmRingingActivity extends SwipeBackActivity {
     private Ringtone r;
     private Vibrator vibrator;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
 
+    protected void onCreate(Bundle savedInstanceState) {
+        /*
         getWindow().addFlags(
                 WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED +
                 WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD +
@@ -71,8 +71,10 @@ public class AlarmRingingActivity extends SwipeBackActivity {
             long[] pattern = {0, 2000, 500};
             vibrator.vibrate(pattern, 1);
         }
-
+        */
+ /*
     }
+
 
     @Override
     protected void onDestroy() {
@@ -80,4 +82,6 @@ public class AlarmRingingActivity extends SwipeBackActivity {
         vibrator.cancel();
         super.onStop();
     }
+
 }
+*/

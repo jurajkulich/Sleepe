@@ -28,6 +28,8 @@ import android.widget.TimePicker;
 
 import java.util.Calendar;
 
+import io.objectbox.Box;
+
 import static android.app.Activity.RESULT_OK;
 
 
@@ -48,16 +50,23 @@ public class AddAlarmFragment extends Fragment  {
     public interface AlarmInterface {
         void setAlarmSettings(AlarmSettings settings);
     }
+
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        alarmInterface = (AlarmInterface) activity;
+        try {
+            alarmInterface = (AlarmInterface) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString() + " must implement OnFragmentInteractionListener");
+        }
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootFragmentView = inflater.inflate(R.layout.add_alarm_view, container, false);
+
+
 
 
         final Calendar cal = Calendar.getInstance();
@@ -130,7 +139,7 @@ public class AddAlarmFragment extends Fragment  {
         okButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                alarmInterface.setAlarmSettings(new AlarmSettings(currentRingtone.toString(), vibrationStatus, alarmHour, alarmMinute));
+                alarmInterface.setAlarmSettings(new AlarmSettings(currentRingtone.toString(), vibrationStatus, alarmHour, alarmMinute, true));
                 getFragmentManager().popBackStack();
             }
         });

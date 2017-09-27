@@ -1,39 +1,43 @@
 package com.example.android.timemachine;
 
-import android.net.Uri;
-
-import io.requery.Entity;
-import io.requery.Generated;
-import io.requery.Key;
+import io.objectbox.annotation.Entity;
+import io.objectbox.annotation.Generated;
+import io.objectbox.annotation.Id;
 
 
 /**
  * Created by Juraj on 13.4.2017.
  */
 @Entity
-abstract class AlarmSettings  {
+public class AlarmSettings  {
 
-    @Key @Generated
-    int id;
+    @Id
+    private Long id;
 
-
-    String alarmRingtone;
-    int alarmvibration;
-    int alarmHour;
-    int alarmMinute;
+    private String alarmRingtone;
+    private int alarmvibration;
+    private int alarmHour;
+    private int alarmMinute;
+    private boolean isActive;
 
     AlarmSettings() {}
 
-    AlarmSettings(long id, String ringtone,int vibration, int hour, int minute)
+    AlarmSettings(String ringtone,int vibration, int hour, int minute, boolean active)
     {
+        this.alarmRingtone = ringtone;
+        this.alarmvibration =vibration;
+        this.alarmHour = hour;
+        this.alarmMinute = minute;
+        this.isActive = active;
     }
+
 
     public long getAlarmID() {
         return id;
     }
 
     public void setAlarmID(long alarmID) {
-        this._id = alarmID;
+        this.id = alarmID;
     }
 
     public String getAlarmRingtone() {
@@ -67,4 +71,21 @@ abstract class AlarmSettings  {
     public void setAlarmMinute(int alarmMinute) {
         this.alarmMinute = alarmMinute;
     }
+
+    public Long getId() {
+        return this.id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public int getAlarmvibration() {
+        return this.alarmvibration;
+    }
+
+    public void setIsActive(boolean active) { this.isActive = active; }
+
+    public boolean getIsActive() { return this.isActive; }
+
 }

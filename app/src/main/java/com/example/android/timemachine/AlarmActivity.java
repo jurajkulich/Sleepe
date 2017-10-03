@@ -14,6 +14,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.Toast;
 
 import java.util.Date;
@@ -21,7 +22,7 @@ import java.util.Date;
 import io.objectbox.Box;
 import io.objectbox.BoxStore;
 
-public class AlarmActivity extends AppCompatActivity  implements AddAlarmFragment.AlarmInterface{
+public class AlarmActivity extends AppCompatActivity  implements AddAlarmFragment.AlarmInterface {
 
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
@@ -64,7 +65,15 @@ public class AlarmActivity extends AppCompatActivity  implements AddAlarmFragmen
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        mAdapter = new AlarmAdapter(alarmBox.getAll());
+        mAdapter = new AlarmAdapter(alarmBox.getAll(), new RowSwitchClickListener() {
+            @Override
+            public void onSwitch(boolean status, long  position, AlarmSettings alarmSettings) {
+                Toast.makeText(getApplicationContext(), "Switch: " + Boolean.toString(status)+ " with id: " + position, Toast.LENGTH_SHORT).show();
+                alarmSettings.setIsActive(status);
+                alarmBox.put(alarmSettings);
+            }
+        });
+
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
 
@@ -112,5 +121,6 @@ public class AlarmActivity extends AppCompatActivity  implements AddAlarmFragmen
         int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
         decorView.setSystemUiVisibility(uiOptions);
     }
+
 }
 

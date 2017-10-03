@@ -11,6 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,19 +22,23 @@ import java.util.List;
 public class AlarmAdapter extends RecyclerView.Adapter<AlarmAdapter.ViewHolder> {
 
     private List<AlarmSettings> mDataSet;
+    private RowSwitchClickListener mRowSwitchClickListener;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public TextView mTextView;
         public CompoundButton mToggleButton;
+        private WeakReference<RowSwitchClickListener> listenerRef;
 
-        public ViewHolder(View alarmView) {
+        public ViewHolder(View alarmView, RowSwitchClickListener rowSwitchClickListener) {
             super(alarmView);
+            listenerRef = new WeakReference<>(rowSwitchClickListener);
             mTextView = (TextView) itemView.findViewById(R.id.alarmTextView);
             mToggleButton = (CompoundButton) itemView.findViewById(R.id.alarm_status_toggle_button);
-    }
+        }
     }
 
-    public AlarmAdapter(List alarmSettings) {
+    public AlarmAdapter(List alarmSettings, RowSwitchClickListener rowSwitchClickListener ) {
+        mRowSwitchClickListener = rowSwitchClickListener;
         mDataSet = alarmSettings;
     }
 
@@ -42,19 +47,23 @@ public class AlarmAdapter extends RecyclerView.Adapter<AlarmAdapter.ViewHolder> 
         Context context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
         View alarmView = inflater.inflate(R.layout.my_text_view, parent, false);
-        ViewHolder vh = new ViewHolder(alarmView);
+        ViewHolder vh = new ViewHolder(alarmView, mRowSwitchClickListener);
         return vh;
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, final int position, List<Object> payloads) {
+    public void onBindViewHolder(final ViewHolder holder, final int position, List<Object> payloads) {
         final AlarmSettings alarm = mDataSet.get(position);
         TextView textView = holder.mTextView;
-        textView.setText(alarm.getAlarmHour() + ":" + alarm.getAlarmMinute()); //  + "-ID: " + alarm.getAlarmID()
+        textView.setText(alarm.getAlarmHour() + ":" + alarm.getAlarmMinute() + "-ID: " + alarm.getAlarmID()); //
         CompoundButton toggleButton = holder.mToggleButton;
         toggleButton.setChecked(alarm.getIsActive());
-
-
+        toggleButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                holder.listenerRef.get().onSwitch(b, alarm.getAlarmID(), alarm);
+            }
+        });
     }
 
     @Override
@@ -75,5 +84,10 @@ public class AlarmAdapter extends RecyclerView.Adapter<AlarmAdapter.ViewHolder> 
         mDataSet.clear();
         mDataSet.addAll(data);
         notifyDataSetChanged();
+    }
+
+    public void setSwitchListener( RowSwitchClickListener rowSwitchClickListener)
+    {
+        mRowSwitchClickListener = rowSwitchClickListener;
     }
 }

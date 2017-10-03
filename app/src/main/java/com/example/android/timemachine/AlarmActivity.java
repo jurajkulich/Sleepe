@@ -1,18 +1,19 @@
 package com.example.android.timemachine;
 
-import android.icu.text.SimpleDateFormat;
-import android.os.Handler;
+import android.graphics.Color;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.Date;
@@ -33,16 +34,28 @@ public class AlarmActivity extends AppCompatActivity  implements AddAlarmFragmen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_alarm);
 
+        // Hide status bar
         View decorView = getWindow().getDecorView();
         int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
         decorView.setSystemUiVisibility(uiOptions);
-        getSupportActionBar().hide();
+
+        // Set custom toolbar with Title - Name
+        Toolbar toolbar = (Toolbar) findViewById(R.id.alarm_toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("Alarmino");
+
+        // Add icons to toolabr
+        final ActionBar ab = getSupportActionBar();
+        ab.setHomeAsUpIndicator(R.drawable.ic_menu_white_24dp);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        // Set CTL title to white
+        CollapsingToolbarLayout collapsingToolbar = (CollapsingToolbarLayout) findViewById(R.id.alarm__collaps_toolbar);
+        collapsingToolbar.setExpandedTitleColor(Color.WHITE);
+        collapsingToolbar.setCollapsedTitleTextColor(Color.WHITE);
 
         BoxStore boxStore = ((App) getApplication()).getBoxStore();
         alarmBox = boxStore.boxFor(AlarmSettings.class);
-
-        // TextView for showing time
-        final TextView timeShow = (TextView) findViewById(R.id.time_text_view_id);
 
         // FAB for adding alarm
         FloatingActionButton addAlarmIcon = (FloatingActionButton) findViewById(R.id.add_alarm_fab);
@@ -53,9 +66,12 @@ public class AlarmActivity extends AppCompatActivity  implements AddAlarmFragmen
 
         mAdapter = new AlarmAdapter(alarmBox.getAll());
         mRecyclerView.setAdapter(mAdapter);
+        mRecyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
 
-
-        // Showing and updating time
+        /*
+           TextView for showing time
+           final TextView timeShow = (TextView) findViewById(R.id.time_text_view_id);
+           Showing and updating time
         final Handler handler = new Handler(getMainLooper());
         handler.postDelayed(new Runnable() {
             //pHour = cal.get(Calendar.HOUR_OF_DAY);
@@ -66,6 +82,7 @@ public class AlarmActivity extends AppCompatActivity  implements AddAlarmFragmen
                 handler.postDelayed(this, 1000);
             }
         }, 10);
+        */
 
         addAlarmIcon.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -79,37 +96,21 @@ public class AlarmActivity extends AppCompatActivity  implements AddAlarmFragmen
         });
     }
 
+    // Adds new alarm to database and updates RecyclerView
     public void setAlarmSettings(AlarmSettings settings)
     {
         alarmBox.put(settings);
-
-        mAdapter.notifyDataSetChanged();
+        ((AlarmAdapter) mAdapter).update(alarmBox.getAll());
         Toast.makeText(this, "Added with id: " + settings.getAlarmID(), Toast.LENGTH_SHORT).show();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        // Hide the status and action bar onResume
+        // Hide the status bar onResume
         View decorView = getWindow().getDecorView();
         int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
         decorView.setSystemUiVisibility(uiOptions);
-        getSupportActionBar().hide();
     }
 }
 
-/*
-
-
-    public void setAlarmSettings(AlarmSettings settings)
-    {
-        // Add new alarm to database and adapter
-        long id = db.addSettings(settings);
-        settings.setAlarmID(id);
-        Toast.makeText(getBaseContext(), "Alarm ID: " + id , Toast.LENGTH_SHORT).show();
-        customAdapter.clear();
-        customAdapter.addAll(db.getAllAlarmTimes());
-        customAdapter.notifyDataSetChanged();
-        //StartAlarmActivty(settings);
-    }
- */

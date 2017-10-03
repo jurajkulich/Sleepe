@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import java.util.ArrayList;
@@ -46,12 +47,14 @@ public class AlarmAdapter extends RecyclerView.Adapter<AlarmAdapter.ViewHolder> 
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position, List<Object> payloads) {
-        AlarmSettings alarm = mDataSet.get(position);
+    public void onBindViewHolder(ViewHolder holder, final int position, List<Object> payloads) {
+        final AlarmSettings alarm = mDataSet.get(position);
         TextView textView = holder.mTextView;
-        textView.setText(alarm.getAlarmHour() + ":" + alarm.getAlarmMinute() + "-ID: " + alarm.getAlarmID());
+        textView.setText(alarm.getAlarmHour() + ":" + alarm.getAlarmMinute()); //  + "-ID: " + alarm.getAlarmID()
         CompoundButton toggleButton = holder.mToggleButton;
         toggleButton.setChecked(alarm.getIsActive());
+
+
     }
 
     @Override
@@ -66,5 +69,11 @@ public class AlarmAdapter extends RecyclerView.Adapter<AlarmAdapter.ViewHolder> 
     @Override
     public int getItemCount() {
         return mDataSet.size()  ;
+    }
+
+    public void update(List<AlarmSettings> data) {
+        mDataSet.clear();
+        mDataSet.addAll(data);
+        notifyDataSetChanged();
     }
 }

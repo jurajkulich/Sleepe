@@ -9,9 +9,11 @@
     </style>
 
     <style name="CustomActionBarTheme" parent="@style/Theme.AppCompat.Light.DarkActionBar">
-        <item name="android:actionBarStyle">@style/MyActionBar</item>
-        <!-- Support library compatibility -->
-        <item name="actionBarStyle">@style/MyActionBar</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
     </style>
 
     <!-- ActionBar styles -->
@@ -30,7 +32,6 @@
     
     <style name="MySwitch" parent="Theme.AppCompat.Light">
         <item name="colorControlActivated">@color/primaryDark</item>
-
     </style>
 
     <style name="Theme.Swipe.Back" parent="Theme.AppCompat.Light.DarkActionBar">

@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-
+<!--
 <com.liuguangqiang.swipeback.SwipeBackLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/swipeBackLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-
+</com.liuguangqiang.swipeback.SwipeBackLayout>
+-->
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
@@ -39,5 +40,5 @@
         />
 </RelativeLayout>
 
-</com.liuguangqiang.swipeback.SwipeBackLayout>
+
 

@@ -1,5 +1,5 @@
 package com.example.android.timemachine;
-/*
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -13,6 +13,7 @@ import android.os.Handler;
 import android.os.Vibrator;
 // import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
@@ -23,14 +24,18 @@ import android.widget.Toast;
 import com.liuguangqiang.swipeback.SwipeBackActivity;
 import com.liuguangqiang.swipeback.SwipeBackLayout;
 
-public class AlarmRingingActivity extends SwipeBackActivity {
+public class AlarmRingingActivity extends AppCompatActivity {
 
     private Ringtone r;
     private Vibrator vibrator;
 
 
     protected void onCreate(Bundle savedInstanceState) {
-        /*
+
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_alarm_ringing);
+        // setDragEdge(SwipeBackLayout.DragEdge.BOTTOM);
+
         getWindow().addFlags(
                 WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED +
                 WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD +
@@ -44,14 +49,12 @@ public class AlarmRingingActivity extends SwipeBackActivity {
         decorView.setSystemUiVisibility(uiOptions);
         // Remember that you should never show the action bar if the
         // status bar is hidden, so hide that too if necessary.
-        getSupportActionBar().hide();
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_alarm_ringing);
-        setDragEdge(SwipeBackLayout.DragEdge.BOTTOM);
+        // getSupportActionBar().hide();
 
 
-        View v = findViewById(android.R.id.content);
-        RelativeLayout ringingRelative = (RelativeLayout) v.findViewById(R.id.activity_alarm_ringing);
+
+        //View v = findViewById(android.R.id.content);
+        //RelativeLayout ringingRelative = (RelativeLayout) v.findViewById(R.id.activity_alarm_ringing);
 
         String ringtone = getIntent().getStringExtra("ringtone");
         int vibration = getIntent().getIntExtra("vibration", -1);
@@ -68,11 +71,11 @@ public class AlarmRingingActivity extends SwipeBackActivity {
         r.play();
 
         if(vibration != 0) {
-            long[] pattern = {0, 2000, 500};
+            long[] pattern = {0, 3000, 500};
             vibrator.vibrate(pattern, 1);
         }
-        */
- /*
+
+
     }
 
 
@@ -80,8 +83,7 @@ public class AlarmRingingActivity extends SwipeBackActivity {
     protected void onDestroy() {
         r.stop();
         vibrator.cancel();
-        super.onStop();
+        super.onDestroy();
     }
 
 }
-*/

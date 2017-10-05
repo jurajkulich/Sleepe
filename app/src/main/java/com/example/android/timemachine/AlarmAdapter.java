@@ -1,5 +1,6 @@
 package com.example.android.timemachine;
 
+import android.app.AlarmManager;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SwitchCompat;
@@ -23,6 +24,7 @@ public class AlarmAdapter extends RecyclerView.Adapter<AlarmAdapter.ViewHolder> 
 
     private List<AlarmSettings> mDataSet;
     private RowSwitchClickListener mRowSwitchClickListener;
+
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public TextView mTextView;
@@ -55,7 +57,7 @@ public class AlarmAdapter extends RecyclerView.Adapter<AlarmAdapter.ViewHolder> 
     public void onBindViewHolder(final ViewHolder holder, final int position, List<Object> payloads) {
         final AlarmSettings alarm = mDataSet.get(position);
         TextView textView = holder.mTextView;
-        textView.setText(alarm.getAlarmHour() + ":" + alarm.getAlarmMinute() + "-ID: " + alarm.getAlarmID()); //
+        textView.setText(alarm.getAlarmHour() + ":" + alarm.getAlarmMinute()); //  + "-ID: " + alarm.getAlarmID()
         CompoundButton toggleButton = holder.mToggleButton;
         toggleButton.setChecked(alarm.getIsActive());
         toggleButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {

@@ -4,22 +4,35 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
+import android.os.Build;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.graphics.Palette;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.CompoundButton;
 import android.widget.Toast;
 
@@ -29,33 +42,53 @@ import java.util.Date;
 import io.objectbox.Box;
 import io.objectbox.BoxStore;
 
+import static com.example.android.timemachine.R.color.black;
+
 public class AlarmActivity extends AppCompatActivity  implements AddAlarmFragment.AlarmInterface {
 
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
+    private DrawerLayout mDrawerLayout;
     private AlarmManager mAlarmManager;
     private Box<AlarmSettings> alarmBox;
+    private Toolbar toolbar;
+    private AppBarLayout mAppBarLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_alarm);
 
+
         // Hide status bar
-        View decorView = getWindow().getDecorView();
-        int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
-        decorView.setSystemUiVisibility(uiOptions);
+        //View decorView = getWindow().getDecorView();
+        //int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
+        //decorView.setSystemUiVisibility(uiOptions);
 
         // Set custom toolbar with Title - Name
-        Toolbar toolbar = (Toolbar) findViewById(R.id.alarm_toolbar);
+        toolbar = (Toolbar) findViewById(R.id.alarm_toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("Alarmino");
+        getSupportActionBar().setTitle("Sleepe");
+
+        // Get base cover photo from drawable and convert it to bitmap
+        Bitmap coverPhoto = BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.night_sky);
+        setStatusBarColor(coverPhoto);
 
         // Add icons to toolabr
         final ActionBar ab = getSupportActionBar();
         ab.setHomeAsUpIndicator(R.drawable.ic_menu_white_24dp);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        /*
+        mAppBarLayout = (AppBarLayout) findViewById(R.id.app_bar_layout);
+        mAppBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
+            @Override
+            public void onOffsetChanged(AppBarLayout appBarLayout, int i) {
+
+            }
+        });
+        */
 
         // Set CTL title to white
         CollapsingToolbarLayout collapsingToolbar = (CollapsingToolbarLayout) findViewById(R.id.alarm__collaps_toolbar);
@@ -73,6 +106,8 @@ public class AlarmActivity extends AppCompatActivity  implements AddAlarmFragmen
         mRecyclerView = (RecyclerView) findViewById(R.id.alarms_recycler_view);
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
+
+        mDrawerLayout = findViewById(R.id.my_drawer_layout);
 
         mAdapter = new AlarmAdapter(alarmBox.getAll(), new RowSwitchClickListener() {
             @Override
@@ -161,9 +196,48 @@ public class AlarmActivity extends AppCompatActivity  implements AddAlarmFragmen
     protected void onResume() {
         super.onResume();
         // Hide the status bar onResume
+        /*
         View decorView = getWindow().getDecorView();
         int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
         decorView.setSystemUiVisibility(uiOptions);
+        */
+    }
+
+    // Open menu on menu click
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        if( item.getItemId() == android.R.id.home)
+        {
+            mDrawerLayout.openDrawer(GravityCompat.START);
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    // Get swatch from bitmap
+    public Palette.Swatch createPaletteSync(Bitmap bitmap)
+    {
+        Palette palette =  Palette.from(bitmap).generate();
+        Palette.Swatch swatch = palette.getDominantSwatch();
+        if( swatch != null)
+            return swatch;
+        else {
+            swatch = palette.getLightVibrantSwatch();
+            return swatch;
+        }
+    }
+
+    // Set status bar color by cover photo
+    public void setStatusBarColor(Bitmap bitmap)
+    {
+        Palette.Swatch swatch = createPaletteSync(bitmap);
+        //toolbar.setBackgroundColor(swatch.getRgb());
+        //toolbar.setTitleTextColor(swatch.getTitleTextColor());
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Window window = getWindow();
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.setStatusBarColor(swatch.getRgb());
+        }
     }
 
 

@@ -7,14 +7,13 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -109,6 +108,7 @@ public class AlarmActivity extends AppCompatActivity  implements AddAlarmFragmen
 
         mDrawerLayout = findViewById(R.id.my_drawer_layout);
 
+
         mAdapter = new AlarmAdapter(alarmBox.getAll(), new RowSwitchClickListener() {
             @Override
             public void onSwitch(boolean status, long  position, AlarmSettings alarmSettings) {
@@ -130,6 +130,20 @@ public class AlarmActivity extends AppCompatActivity  implements AddAlarmFragmen
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
 
+        NavigationView navigationView = (NavigationView) findViewById(R.id.drawer_navigation_view);
+        navigationView.getMenu().getItem(0).setChecked(true);
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                int id = menuItem.getItemId();
+                switch(id) {
+                    case R.id.menu_about:
+                        Toast.makeText(getApplicationContext(), "I'm just so fucking awesome!", Toast.LENGTH_SHORT).show();
+                        menuItem.setChecked(true);
+                }
+                return false;
+            }
+        });
         /*
            TextView for showing time
            final TextView timeShow = (TextView) findViewById(R.id.time_text_view_id);

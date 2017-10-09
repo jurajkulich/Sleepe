@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">TimeMachine</string>
-
+    <string name="alarms">Alarms</string>
     <string name="settings">Settings</string>
-    <string name="about">About</string>
+    <string name="about">About me</string>
+    <string name="stats">Stats</string>
+    <string name="feedback">Feedback / Report </string>
 </resources>

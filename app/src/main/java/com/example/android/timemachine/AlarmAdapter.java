@@ -57,7 +57,8 @@ public class AlarmAdapter extends RecyclerView.Adapter<AlarmAdapter.ViewHolder> 
     public void onBindViewHolder(final ViewHolder holder, final int position, List<Object> payloads) {
         final AlarmSettings alarm = mDataSet.get(position);
         TextView textView = holder.mTextView;
-        textView.setText(alarm.getAlarmHour() + ":" + alarm.getAlarmMinute()); //  + "-ID: " + alarm.getAlarmID()
+        String time = String.format("%d:%02d", alarm.getAlarmHour(), alarm.getAlarmMinute());
+        textView.setText(time);
         CompoundButton toggleButton = holder.mToggleButton;
         toggleButton.setChecked(alarm.getIsActive());
         toggleButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {

@@ -130,16 +130,20 @@ public class AlarmActivity extends AppCompatActivity  implements AddAlarmFragmen
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.drawer_navigation_view);
-        navigationView.getMenu().getItem(0).setChecked(true);
+        final NavigationView navigationView = (NavigationView) findViewById(R.id.drawer_navigation_view);
+        navigationView.getMenu().findItem(R.id.menu_basic_alarm).setChecked(true);
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 int id = menuItem.getItemId();
+                menuItem.setChecked(true);
+                mDrawerLayout.closeDrawer(GravityCompat.START);
                 switch(id) {
                     case R.id.menu_about:
                         Toast.makeText(getApplicationContext(), "I'm just so fucking awesome!", Toast.LENGTH_SHORT).show();
-                        menuItem.setChecked(true);
+                        // menuItem.setChecked(true);
+                        // navigationView.getMenu().getItem(--id).setChecked(true);
+                        navigationView.setCheckedItem(id);
                 }
                 return false;
             }
@@ -254,7 +258,12 @@ public class AlarmActivity extends AppCompatActivity  implements AddAlarmFragmen
         }
     }
 
-
-
+    @Override
+    public void onBackPressed() {
+        if( mDrawerLayout.isDrawerOpen(GravityCompat.START))
+            mDrawerLayout.closeDrawer(GravityCompat.START);
+        else
+            super.onBackPressed();
+    }
 }
 

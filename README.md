@@ -2,7 +2,7 @@
 Sleepe is material designed alarm, in future hopefully intelligent.
 App isn't yet on Google Play.
 
-![sleepe](https://i.imgur.com/zOWBqkg.png){:height="50%" width="50%"}
+<img src="https://i.imgur.com/zOWBqkg.png" alt="sleepe" width="50%" height="50%">
 
 
 ## Authors

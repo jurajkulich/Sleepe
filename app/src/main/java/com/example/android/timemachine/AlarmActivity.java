@@ -59,12 +59,6 @@ public class AlarmActivity extends AppCompatActivity  implements AddAlarmFragmen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_alarm);
 
-
-        // Hide status bar
-        //View decorView = getWindow().getDecorView();
-        //int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
-        //decorView.setSystemUiVisibility(uiOptions);
-
         // Set custom toolbar with Title - Name
         toolbar = (Toolbar) findViewById(R.id.alarm_toolbar);
         setSupportActionBar(toolbar);
@@ -78,16 +72,6 @@ public class AlarmActivity extends AppCompatActivity  implements AddAlarmFragmen
         final ActionBar ab = getSupportActionBar();
         ab.setHomeAsUpIndicator(R.drawable.ic_menu_white_24dp);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-        /*
-        mAppBarLayout = (AppBarLayout) findViewById(R.id.app_bar_layout);
-        mAppBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
-            @Override
-            public void onOffsetChanged(AppBarLayout appBarLayout, int i) {
-
-            }
-        });
-        */
 
         // Set CTL title to white
         CollapsingToolbarLayout collapsingToolbar = (CollapsingToolbarLayout) findViewById(R.id.alarm__collaps_toolbar);
@@ -181,8 +165,8 @@ public class AlarmActivity extends AppCompatActivity  implements AddAlarmFragmen
     {
         alarmBox.put(settings);
         ((AlarmAdapter) mAdapter).update(alarmBox.getAll());
-        //Toast.makeText(this, "Added with id: " + settings.getAlarmID(), Toast.LENGTH_SHORT).show();
-        Snackbar.make(findViewById(R.id.activity_alarm_coordinator_layout),"Added alarm: " + settings.getAlarmHour() + ":" + settings.getAlarmMinute(), Snackbar.LENGTH_SHORT ).show();
+        String time = String.format("%d:%02d", settings.getAlarmHour(), settings.getAlarmMinute());
+        Snackbar.make(findViewById(R.id.activity_alarm_coordinator_layout), "Added alarm: " + time, Snackbar.LENGTH_SHORT ).show();
         activeAlarm(settings);
     }
 
@@ -200,6 +184,8 @@ public class AlarmActivity extends AppCompatActivity  implements AddAlarmFragmen
         calendar.set(Calendar.HOUR_OF_DAY, alarmSettings.getAlarmHour());
         calendar.set(Calendar.MINUTE, alarmSettings.getAlarmMinute());
         calendar.set(Calendar.SECOND, 0);
+        if( calendar.before(Calendar.getInstance()))
+            calendar.add(Calendar.DAY_OF_MONTH, 1);
         mAlarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), alarmIntent);
     }
 
@@ -213,12 +199,6 @@ public class AlarmActivity extends AppCompatActivity  implements AddAlarmFragmen
     @Override
     protected void onResume() {
         super.onResume();
-        // Hide the status bar onResume
-        /*
-        View decorView = getWindow().getDecorView();
-        int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
-        decorView.setSystemUiVisibility(uiOptions);
-        */
     }
 
     // Open menu on menu click

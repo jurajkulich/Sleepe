@@ -14,12 +14,11 @@
             android:orientation="vertical"
             android:layout_gravity="bottom|center"
             android:layout_centerHorizontal="true"
-            android:layout_marginBottom="19dp"
 
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
             android:paddingTop="10dp"
-            android:paddingBottom="5dp">
+            android:paddingBottom="0dp">
 
 
                 <TimePicker
@@ -68,6 +67,8 @@
                     android:maxLines="1"
                     android:layout_weight="1"
                     android:gravity="right"
+                    android:clickable="true"
+                    android:background="?attr/selectableItemBackground"
                     />
                 </LinearLayout>
 
@@ -133,8 +134,10 @@
                         android:text="Cancel"
                         android:layout_weight="1"
                         android:gravity="center"
-                        android:paddingTop="20dp"
-                        android:paddingBottom="5dp"
+                        android:paddingTop="10dp"
+                        android:paddingBottom="10dp"
+                        android:clickable="true"
+                        android:background="?attr/selectableItemBackground"
                         />
 
                     <TextView
@@ -146,8 +149,10 @@
                         android:text="Set"
                         android:layout_weight="1"
                         android:gravity="center"
-                        android:paddingTop="20dp"
-                        android:paddingBottom="5dp"
+                        android:paddingTop="10dp"
+                        android:paddingBottom="10dp"
+                        android:clickable="true"
+                        android:background="?attr/selectableItemBackground"
                             />
         </LinearLayout>
 

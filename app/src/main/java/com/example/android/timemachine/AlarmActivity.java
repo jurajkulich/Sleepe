@@ -192,7 +192,8 @@ public class AlarmActivity extends AppCompatActivity  implements AddAlarmFragmen
     public void deactiveAlarm(int request)
     {
         Intent intent = new Intent(getApplicationContext(), AlarmRingingActivity.class);
-        PendingIntent alarmIntent = PendingIntent.getBroadcast(getApplicationContext(),request , intent, 0);
+        PendingIntent alarmIntent = PendingIntent.getActivity(getApplicationContext(),request , intent, 0);
+        alarmIntent.cancel();
         mAlarmManager.cancel(alarmIntent);
     }
 

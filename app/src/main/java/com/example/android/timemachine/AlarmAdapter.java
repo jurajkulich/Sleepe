@@ -39,9 +39,12 @@ public class AlarmAdapter extends RecyclerView.Adapter<AlarmAdapter.ViewHolder> 
         }
     }
 
-    public AlarmAdapter(List alarmSettings, RowSwitchClickListener rowSwitchClickListener ) {
+    public AlarmAdapter(List<AlarmSettings> alarmSettings, RowSwitchClickListener rowSwitchClickListener ) {
         mRowSwitchClickListener = rowSwitchClickListener;
-        mDataSet = alarmSettings;
+        if( alarmSettings.isEmpty())
+            mDataSet = new ArrayList<AlarmSettings>();
+        else
+            mDataSet = alarmSettings;
     }
 
     public AlarmAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType)

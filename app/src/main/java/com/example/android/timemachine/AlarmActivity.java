@@ -125,9 +125,9 @@ public class AlarmActivity extends AppCompatActivity  implements AddAlarmFragmen
                 switch(id) {
                     case R.id.menu_about:
                         Toast.makeText(getApplicationContext(), "I'm just so fucking awesome!", Toast.LENGTH_SHORT).show();
-                        // menuItem.setChecked(true);
-                        // navigationView.getMenu().getItem(--id).setChecked(true);
                         navigationView.setCheckedItem(id);
+                    case R.id.menu_settings:
+
                 }
                 return false;
             }
